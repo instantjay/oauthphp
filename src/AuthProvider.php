@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartShanghai\SmartAuth;
+namespace instantjay\oauthphp;
 
 class AuthProvider {
 

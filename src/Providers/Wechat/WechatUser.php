@@ -1,6 +1,6 @@
 <?php
 
-namespace instantjay\oauthphp;
+namespace instantjay\oauthphp\Providers\Wechat;
 
 use Particle\Filter\Filter;
 

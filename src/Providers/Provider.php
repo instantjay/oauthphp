@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartShanghai\SmartAuth\Providers;
+namespace instantjay\oauthphp\Provider;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;

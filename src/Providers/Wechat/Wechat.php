@@ -1,10 +1,9 @@
 <?php
 
-namespace SmartShanghai\SmartAuth\Providers\Wechat;
+namespace instantjay\oauthphp\Providers\Wechat;
 
 use GuzzleHttp\Client;
 use function GuzzleHttp\Psr7\build_query;
-use instantjay\oauthphp\WechatUser;
 
 abstract class Wechat {
     protected $appId;

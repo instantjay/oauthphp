@@ -1,8 +1,6 @@
 <?php
 
-namespace SmartShanghai\SmartAuth\Providers\Facebook;
-
-use SmartShanghai\SmartAuth\Providers\Provider;
+namespace instantjay\oauthphp\Providers\Facebook;
 
 class Facebook extends Provider {
     const API_URI = 'https://www.facebook.com/v2.9/dialog/oauth';

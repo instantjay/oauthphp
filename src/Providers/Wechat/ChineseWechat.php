@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartShanghai\SmartAuth\Providers\Wechat;
+namespace instantjay\oauthphp\Providers\Wechat;
 
 class ChineseWechat extends Wechat {
     public function __construct($appId, $appSecret) {
