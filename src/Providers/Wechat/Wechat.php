@@ -4,6 +4,7 @@ namespace instantjay\oauthphp\Providers\Wechat;
 
 use GuzzleHttp\Client;
 use function GuzzleHttp\Psr7\build_query;
+use instantjay\oauthphp\Exceptions\RejectedAuthException;
 
 abstract class Wechat {
     protected $appId;
@@ -22,12 +23,13 @@ abstract class Wechat {
 
     /**
      * Forward the user to Wechat's site where he will be presented with the QR code for sign-in.
+     * http://open.wechat.com/cgi-bin/newreadtemplate?t=overseas_open/docs/web/login/login#auth-process
      *
      * @param $callbackUrl
      * @param $state
      */
     public function authenticate($callbackUrl, $state = null) {
-        $url = $this->baseUri.'https://open.weixin.qq.com/connect/qrconnect';
+        $url = 'https://open.weixin.qq.com/connect/qrconnect';
 
         $params = [
             'appid' => $this->appId,
@@ -46,12 +48,16 @@ abstract class Wechat {
     }
 
     /**
+     * After user gets sent back from Wechat, use this method to parse the params that get passed along back.
+     * Returns the temporary code that can be used to fetch an access token, or throws an exception if something fails (eg. the user rejects the signin).
+     *
      * @param $params
      * @return string|null
+     * @throws RejectedAuthException
      */
     public function parseAuthenticationResponse($params) {
         if(empty($params['code']))
-            return null;
+            throw new RejectedAuthException();
 
         return $params['code'];
     }
@@ -104,6 +110,11 @@ abstract class Wechat {
         return $response->getBody();
     }
 
+    /**
+     * @param $accessToken
+     * @param $openId
+     * @return WechatUser
+     */
     public function requestUser($accessToken, $openId) {
         $uri = $this->baseUri.'/sns/userinfo';
 
