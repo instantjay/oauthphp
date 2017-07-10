@@ -1,4 +1,6 @@
 {
+    "name": "instantjay/oauthphp",
+    "description": "Library for authenticating against various 3rd party services.",
     "autoload": {
         "psr-4": {"instantjay\\oauthphp\\": "src"}
     },
