@@ -3,7 +3,6 @@
 namespace instantjay\oauthphp\Providers\Wechat;
 
 use GuzzleHttp\Client;
-use function GuzzleHttp\Psr7\build_query;
 use instantjay\oauthphp\Exceptions\RejectedAuthException;
 
 abstract class Wechat {
@@ -39,7 +38,7 @@ abstract class Wechat {
             'state' => $state
         ];
 
-        $urlParams = build_query($params);
+        $urlParams = http_build_query($params);
 
         $completeUrl = $url.'?'.$urlParams;
 
