@@ -33,7 +33,7 @@ abstract class Wechat {
 
         $params = [
             'appid' => $this->appId,
-            'redirect_uri' => urlencode($callbackUrl),
+            'redirect_uri' => $callbackUrl,
             'response_type' => 'code',
             'scope' => $scope,
             'state' => $state
