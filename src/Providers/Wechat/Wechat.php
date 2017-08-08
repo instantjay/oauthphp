@@ -25,16 +25,17 @@ abstract class Wechat {
      * http://open.wechat.com/cgi-bin/newreadtemplate?t=overseas_open/docs/web/login/login#auth-process
      *
      * @param $callbackUrl
+     * @param $scope string snsapi_base, snsapi_login, snsapi_userinfo etc
      * @param $state
      */
-    public function authenticate($callbackUrl, $state = null) {
-        $url = 'https://open.weixin.qq.com/connect/qrconnect';
+    public function authenticate($callbackUrl, $scope = 'snsapi_base', $state = null) {
+        $url = 'https://open.weixin.qq.com/connect/oauth2/authorize';
 
         $params = [
             'appid' => $this->appId,
             'redirect_uri' => urlencode($callbackUrl),
             'response_type' => 'code',
-            'scope' => 'snsapi_login',
+            'scope' => $scope,
             'state' => $state
         ];
 
