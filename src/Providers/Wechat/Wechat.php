@@ -24,7 +24,7 @@ abstract class Wechat {
      * Forward the user to Wechat's site where he will be presented with the QR code for sign-in.
      * http://open.wechat.com/cgi-bin/newreadtemplate?t=overseas_open/docs/web/login/login#auth-process
      *
-     * @param $callbackUrl
+     * @param $callbackUrl string
      * @param $scope string snsapi_base, snsapi_login, snsapi_userinfo etc
      * @param $state
      */
@@ -51,7 +51,7 @@ abstract class Wechat {
      * After user gets sent back from Wechat, use this method to parse the params that get passed along back.
      * Returns the temporary code that can be used to fetch an access token, or throws an exception if something fails (eg. the user rejects the signin).
      *
-     * @param $params
+     * @param $params array
      * @return string|null
      * @throws RejectedAuthException
      */
@@ -65,7 +65,7 @@ abstract class Wechat {
     /**
      * http://admin.wechat.com/wiki/index.php?title=Access_token
      *
-     * @param $code
+     * @param $code string
      * @return \Psr\Http\Message\StreamInterface
      * @throws \Exception
      */
@@ -74,10 +74,12 @@ abstract class Wechat {
         $url = $this->baseUri.'/sns/oauth2/access_token';
 
         $params = [
-            'appid' => $this->appId,
-            'secret' => $this->appSecret,
-            'code' => $code,
-            'grant_type' => 'authorization_code'
+            'query' => [
+                'appid' => $this->appId,
+                'secret' => $this->appSecret,
+                'code' => $code,
+                'grant_type' => 'authorization_code'
+            ]
         ];
 
         $response = $guzzle->request('GET', $url, $params);
@@ -92,16 +94,18 @@ abstract class Wechat {
     }
 
     /**
-     * @param $refreshToken
+     * @param $refreshToken string
      * @return \Psr\Http\Message\StreamInterface
      */
     public function refreshAccessToken($refreshToken) {
         $uri = $this->baseUri.'/sns/oauth2/refresh_token';
 
         $params = [
-            'appid' => $this->appId,
-            'grand_type' => 'refresh_token',
-            'refresh_token' => $refreshToken
+            'query' => [
+                'appid' => $this->appId,
+                'grand_type' => 'refresh_token',
+                'refresh_token' => $refreshToken
+            ]
         ];
 
         $client = new Client();
@@ -111,23 +115,26 @@ abstract class Wechat {
     }
 
     /**
-     * @param $accessToken
-     * @param $openId
+     * @param $accessToken string
+     * @param $openId string
      * @return WechatUser
      */
     public function requestUser($accessToken, $openId) {
         $uri = $this->baseUri.'/sns/userinfo';
 
         $params = [
-            'access_token' => $accessToken,
-            'openid' => $openId
+            'query' => [
+                'access_token' => $accessToken,
+                'openid' => $openId
+            ]
         ];
 
         $client = new Client();
 
         $response = $client->request('GET', $uri, $params);
 
-        $user = new WechatUser($response->getBody());
+        $userData = json_decode($response->getBody(), true);
+        $user = new WechatUser($userData);
 
         return $user;
     }
