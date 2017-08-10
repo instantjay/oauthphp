@@ -87,8 +87,10 @@ abstract class Wechat {
         if($response->getStatusCode() != 200)
             throw new \Exception('Wechat API call failed.');
 
+        /*
         if($response->getHeader('content-type') != 'application/json')
             throw new \Exception('Received response was not JSON.');
+        */
 
         return $response->getBody();
     }
